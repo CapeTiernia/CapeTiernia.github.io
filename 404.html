@@ -1,0 +1,55 @@
+<html>
+<head>
+    <style>
+        .mainContentContainer {
+            margin-top: 5vh;
+            text-align: center;
+        }
+        .titleTextContainer {
+            font-size: 4vh;
+        }
+        .linksContainer {
+            font-size: 1.5vh;
+        }
+        #footer {
+            padding-top: 10vh;
+            text-align: center;
+            font-size: 2vh;
+            padding-bottom: 100vh;
+        }
+    </style>
+</head>
+<body onload='setTimeout(redirectToAddWebPropertyNameIfRequired,0)'>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-76453850-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <div class='mainContentContainer'>
+        <div class='titleTextContainer'>
+            404 | Page not found
+        </div>
+        <br>
+        <div class='linksContainer'>
+            <a href='/covid/'> SARS-CoV-2 Facial Signature Detector</a>
+        </div>
+    </div>
+    <div id='footer'>
+        &middot; &copy;Cape Tiernia University &middot;
+    </div>
+    <script>
+        function redirectToAddWebPropertyNameIfRequired () {
+            if (!window.location.search.includes('webProperty=capetiernia.github.io')) {
+                if (window.location.href.includes('?')) {
+                    window.location.href = window.location.href += '&webProperty=capetiernia.github.io'
+                } else {
+                    window.location.href = window.location.href += '?webProperty=capetiernia.github.io'
+                }
+            }
+        }
+    </script>
+</body>
+</html>
