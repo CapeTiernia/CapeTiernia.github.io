@@ -1,0 +1,273 @@
+<html>
+<!-- http://minifycode.com/html-minifier/ then https://htmlformatter.com/ -->
+<head>
+    <meta name="viewport" content="initial-scale=1">
+    <title>SARS-CoV-2 Facial Signature Detector</title>
+    <style>
+        * {
+            font-family: sans-serif;
+            margin: 0
+        }
+        
+        body {
+            text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+            overflow-x: scroll
+        }
+        
+        .headerDiv {
+            text-align: center;
+            padding-top: 2vh
+        }
+        
+        .headerTitleDiv {
+            font-size: 10vw
+        }
+        
+        .headerSubTitleDiv {
+            font-size: 5vw
+        }
+        
+        .headerOrganisationNameDiv {
+            padding-top: 1vh;
+            font-size: 3vw;
+            padding-left: 10vw;
+            padding-right: 10vw;
+            line-height: 140%
+        }
+        
+        label.cameraButton {
+            display: block;
+            min-width: 100%;
+            min-height: 100%
+        }
+        
+        label.cameraButton input[accept*="camera"] {
+            display: none
+        }
+        
+        .imageContainerDiv {
+            margin-top: 5vh;
+            width: 90vw;
+            height: 90vw;
+            margin-left: 5vw;
+            background-color: #e6e6e6
+        }
+        
+        .inputPictureMainText {
+            font-size: 5vw
+        }
+        
+        .inputPictureSubText {
+            padding-top: 5vw;
+            font-size: 3vw
+        }
+        
+        .inputPictureInfoTextContainer {
+            padding-left: 10vw;
+            padding-right: 10vw;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-top: 35vw
+        }
+        
+        #resultsCanvas {
+            margin-top: 5vh;
+            width: 90vw;
+            height: 90vw;
+            margin-left: 5vw
+        }
+        
+        #imageEle {
+            display: none
+        }
+        
+        .resultsDiv {
+            padding-bottom: 20vh
+        }
+        
+        .resultsDivInnerContainer {
+            margin-left: 5vw;
+            margin-right: 5vw
+        }
+        
+        .resultsItemDiv {
+            font-size: 3vw;
+            padding-top: 1vh
+        }
+        
+        #resultsDetailsDiv {
+            font-size: 0.5vh;
+            padding-top: 10vh
+        }
+        
+        #resultsProbabiltyContainerDiv {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 3vh;
+            background-color: #e6e6e6;
+            padding-top: 2vh;
+            padding-bottom: 2vh
+        }
+        
+        #resultsProbabiltyResultDiv {
+            font-size: 3vh
+        }
+        
+        #resultsProbabiltyPercentDiv {
+            font-size: 5vh
+        }
+        
+        #resultsProbabiltySubTextDiv {
+            font-size: 2vh
+        }
+        
+        #rotateImageButton,
+        #startProcessingButton {
+            border: none;
+            color: #000;
+            padding: 1vw 1vh;
+            text-align: center;
+            text-decoration: none;
+            margin-left: 5vw;
+            margin-top: 1vh
+        }
+        
+        #rotateImageButton {
+            background-color: #e6e6e6
+        }
+        
+        #startProcessingButton {
+            background-color: #fb1
+        }
+        
+        #footer {
+            text-align: center;
+            font-size: 3vw;
+            padding-bottom: 100vh
+        }
+        
+        .buttonControls {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center
+        }
+        
+        #socialShareDivContainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-flow: wrap;
+            padding-top: 4vh
+        }
+        
+        .shareItemDiv {
+            text-align: center;
+            padding: 1vw;
+            background-color: #c0ffee;
+            margin: 1vw;
+            box-shadow: 0 0.2vh 0.4vh 0 rgba(0, 0, 0, 0.2), 0 0.3vh 1vh 0 rgba(0, 0, 0, 0.19);
+            font-size: 3vw
+        }
+        
+        #shareButtonsTitle {
+            font-size: 5vw;
+            padding-bottom: 1vh
+        }
+        
+        #shareImageGenCanvas {
+            display: none
+        }
+        
+        .hideUntilOneImageProcessedContainer {
+            visibility: hidden
+        }
+    </style>
+</head>
+
+<body onload='setup()'>
+    <script>
+        (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-76453850-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <script src='face-api.min.js'></script>
+    <script src='test17-min.js'></script>
+    <script src='face-descriptors-data/kim.js'></script>
+    <div class='headerDiv'>
+        <div class='headerTitleDiv'> SARS-CoV-2</div>
+        <div class='headerSubTitleDiv'> Facial Signature Detector</div>
+        <div class='headerOrganisationNameDiv'> Made by the Cape Tiernia University Infectious Diseases Research Center
+            <br>&copy;2020</div>
+    </div>
+    <div class='imageContainerDiv'>
+        <label class="cameraButton">
+            <input id='imageInput' type="file" accept="image/*;capture=camera">
+            <div class='inputPictureInfoTextContainer'>
+                <div class='inputPictureMainText'> Tap to select picture</div>
+                <div class='inputPictureSubText'> Take picture of face. Good natural or indoor lighting. Ensure subject has eyes open. First photo analysis may take up to 40 seconds. Subsequent photos will be much quicker. Rotate image using button.
+                    <br>
+                    <br><b>Click 'Process' to start (scroll down)</b>
+                    <br><b>Image is processed entirely on device</b></div>
+            </div>
+        </label>
+    </div>
+    <image id='imageEle'></image>
+    <div class='resultsDiv'>
+        <canvas id='resultsCanvas'> </canvas>
+        <div class='buttonControls'>
+            <button id='rotateImageButton' onclick='rotateImageInCanvas()'> Rotate </button>
+            <button id='startProcessingButton' onclick=' var resultsProgressDiv = document.getElementById("resultsProgressDiv"); resultsProgressDiv.innerHTML = ""; resultsProgressDiv.innerHTML += "loading..."; setTimeout(loadResultsData,0)'> Process </button>
+        </div>
+        <div class='resultsDivInnerContainer'>
+            <div class='resultsItemDiv' id='resultsProgressDiv'></div>
+            <div class='resultsItemDiv' id='resultsAgeDiv'></div>
+            <div class='resultsItemDiv' id='resultsGenderDiv'></div>
+            <div class='resultsItemDiv' id='resultsExpressionsDiv'></div>
+            <div class='resultsItemDiv' id='resultsGeneralDiv'></div>
+            <div class='resultsItemDiv' id='resultsScoreDiv'></div>
+            <div class='hideUntilOneImageProcessedContainer' id='resultsProbabiltyContainerDiv'>
+                <div id='resultsProbabiltyResultDiv'></div>
+                <div id='resultsProbabiltyPercentDiv'></div>
+                <div id='resultsProbabiltySubTextDiv'> Confidence level</div>
+            </div>
+            <div class='hideUntilOneImageProcessedContainer' id='socialShareDivContainer'>
+                <div id='shareButtonsTitle'> Share</div>
+                <div style='width:100%'></div>
+                <div class='shareItemDiv' onclick='openSocialShare("twitter")'> Twitter</div>
+                <div class='shareItemDiv' onclick='openSocialShare("facebook")'> Facebook</div>
+                <div class='shareItemDiv' onclick='openSocialShare("email")'> Email</div>
+                <div class='shareItemDiv' onclick='openSocialShare("image")'> Instagram</div>
+                <div class='shareItemDiv' onclick='openSocialShare("image")'> TiKtOk</div>
+                <div class='shareItemDiv' onclick='openSocialShare("image")'> Reddit</div>
+                <div class='shareItemDiv' onclick='openSocialShare("image")'> LinkedIn</div>
+                <div class='shareItemDiv' onclick='openSocialShare("image")'> Google+</div>
+                <div class='shareItemDiv' onclick='openSocialShare("image")'> Friendster</div>
+                <div class='shareItemDiv' onclick='openSocialShare("image")'> Yahoo! Meme</div>
+            </div>
+            <div id='resultsDetailsDiv'></div>
+            <canvas id='shareImageGenCanvas'> </canvas>
+            <div id='footer'> &middot; &copy;Cape Tiernia University &middot;</div>
+        </div>
+    </div>
+</body>
+
+</html>
